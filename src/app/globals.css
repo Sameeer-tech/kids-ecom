@@ -3,13 +3,73 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Pakistani Flag Colors */
+  --pakistan-green: #01411C;
+  --pakistan-green-light: #228B22;
+  --pakistan-white: #ffffff;
+  
+  /* Traditional Pakistani Colors */
+  --saffron: #FF9933;
+  --turmeric: #E4D00A;
+  --henna: #8B4513;
+  --rose: #FF69B4;
+  --emerald: #50C878;
+  --indigo: #4B0082;
+  
+  /* Kids Colors */
+  --sunshine: #FFD700;
+  --sky: #87CEEB;
+  --coral: #FF7F7F;
+  --mint: #98FB98;
+  --lavender: #E6E6FA;
 }
 
 @theme inline {
+  /* Base Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  
+  /* Pakistani Theme Colors */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: var(--pakistan-green-light);
+  --color-primary-600: var(--pakistan-green);
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+  
+  /* Secondary Colors (Saffron/Orange) */
+  --color-secondary-50: #fff7ed;
+  --color-secondary-100: #ffedd5;
+  --color-secondary-200: #fed7aa;
+  --color-secondary-300: #fdba74;
+  --color-secondary-400: #fb923c;
+  --color-secondary-500: var(--saffron);
+  --color-secondary-600: #ea580c;
+  --color-secondary-700: #c2410c;
+  --color-secondary-800: #9a3412;
+  --color-secondary-900: #7c2d12;
+  
+  /* Accent Colors */
+  --color-accent-rose: var(--rose);
+  --color-accent-sky: var(--sky);
+  --color-accent-sunshine: var(--sunshine);
+  --color-accent-mint: var(--mint);
+  --color-accent-coral: var(--coral);
+  --color-accent-lavender: var(--lavender);
+  
+  /* Fonts */
+  --font-sans: 'Inter', 'Noto Sans Urdu', 'Jameel Noori Nastaleeq', Arial, sans-serif;
   --font-mono: var(--font-geist-mono);
+  --font-urdu: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif;
+  
+  /* Shadows with Pakistani aesthetic */
+  --shadow-pakistan: 0 4px 6px -1px rgba(1, 65, 28, 0.1), 0 2px 4px -1px rgba(1, 65, 28, 0.06);
+  --shadow-pakistan-lg: 0 10px 15px -3px rgba(1, 65, 28, 0.1), 0 4px 6px -2px rgba(1, 65, 28, 0.05);
 }
 
 @media (prefers-color-scheme: dark) {
