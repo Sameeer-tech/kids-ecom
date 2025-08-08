@@ -1,117 +1,88 @@
-'use client';
-
-import React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
-  "flex w-full rounded-lg border bg-white px-3 py-2 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+  "flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all",
   {
     variants: {
       variant: {
-        default: "border-gray-300 focus:border-primary-500 focus:ring-primary-500",
-        error: "border-red-500 focus:border-red-500 focus:ring-red-500",
-        success: "border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500",
-        pakistan: "border-primary-300 focus:border-primary-600 focus:ring-primary-500 bg-gradient-to-r from-white to-primary-50"
+        default: "border-input focus-visible:ring-ring",
+        error: "border-red-500 focus-visible:ring-red-500 text-red-900 placeholder:text-red-400",
+        success: "border-green-500 focus-visible:ring-green-500",
+        pakistan: "border-green-300 focus-visible:ring-green-500 focus-visible:border-green-500",
       },
       size: {
-        sm: "h-8 px-2 text-sm",
-        md: "h-10 px-3 text-base",
-        lg: "h-12 px-4 text-lg"
-      }
+        default: "h-10 px-3 py-2",
+        sm: "h-9 px-3 text-xs",
+        lg: "h-11 px-4 text-base",
+        xl: "h-12 px-4 text-lg",
+      },
     },
     defaultVariants: {
       variant: "default",
-      size: "md"
-    }
+      size: "default",
+    },
   }
 );
 
-interface InputProps 
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+export interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
     VariantProps<typeof inputVariants> {
-  label?: string;
-  error?: string;
-  success?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  helperText?: string;
+  error?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ 
-    className, 
-    variant, 
-    size,
-    label,
-    error,
-    success,
-    leftIcon,
-    rightIcon,
-    helperText,
-    id,
-    ...props 
-  }, ref) => {
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-    const finalVariant = error ? 'error' : success ? 'success' : variant;
-
-    return (
-      <div className="w-full">
-        {label && (
-          <label 
-            htmlFor={inputId}
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            {label}
-            {props.required && <span className="text-red-500 ml-1">*</span>}
-          </label>
-        )}
-        
+  ({ className, variant, size, leftIcon, rightIcon, error, type, ...props }, ref) => {
+    const inputVariant = error ? "error" : variant;
+    
+    if (leftIcon || rightIcon) {
+      return (
         <div className="relative">
           {leftIcon && (
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <div className="text-gray-400">
-                {leftIcon}
-              </div>
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+              {leftIcon}
             </div>
           )}
-          
           <input
-            id={inputId}
+            type={type}
             className={cn(
-              inputVariants({ variant: finalVariant, size }),
+              inputVariants({ variant: inputVariant, size, className }),
               leftIcon && "pl-10",
-              rightIcon && "pr-10",
-              className
+              rightIcon && "pr-10"
             )}
             ref={ref}
             {...props}
           />
-          
           {rightIcon && (
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <div className="text-gray-400">
-                {rightIcon}
-              </div>
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+              {rightIcon}
             </div>
           )}
+          {error && (
+            <p className="mt-1 text-xs text-red-600">{error}</p>
+          )}
         </div>
-        
-        {(error || success || helperText) && (
-          <div className="mt-1 text-sm">
-            {error && <p className="text-red-600">{error}</p>}
-            {success && <p className="text-emerald-600">{success}</p>}
-            {!error && !success && helperText && (
-              <p className="text-gray-500">{helperText}</p>
-            )}
-          </div>
+      );
+    }
+
+    return (
+      <div>
+        <input
+          type={type}
+          className={cn(inputVariants({ variant: inputVariant, size, className }))}
+          ref={ref}
+          {...props}
+        />
+        {error && (
+          <p className="mt-1 text-xs text-red-600">{error}</p>
         )}
       </div>
     );
   }
 );
-
 Input.displayName = "Input";
 
 export { Input, inputVariants };
-export type { InputProps };

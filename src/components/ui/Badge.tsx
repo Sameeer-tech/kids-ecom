@@ -1,85 +1,82 @@
-import React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
-        default: "border-transparent bg-primary-600 text-white hover:bg-primary-700",
-        secondary: "border-transparent bg-secondary-500 text-white hover:bg-secondary-600",
-        success: "border-transparent bg-emerald-600 text-white hover:bg-emerald-700",
-        warning: "border-transparent bg-yellow-500 text-white hover:bg-yellow-600",
-        danger: "border-transparent bg-red-600 text-white hover:bg-red-700",
-        outline: "border-primary-600 text-primary-600 hover:bg-primary-50",
-        pakistan: "border-transparent bg-gradient-to-r from-primary-600 to-secondary-500 text-white",
-        discount: "border-transparent bg-red-600 text-white animate-pulse",
-        new: "border-transparent bg-emerald-600 text-white",
-        sale: "border-transparent bg-orange-600 text-white",
-        featured: "border-transparent bg-purple-600 text-white"
+        default:
+          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+        secondary:
+          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        pakistan:
+          "border-transparent bg-gradient-to-r from-green-600 to-green-700 text-white shadow-sm",
+        outline: "text-foreground border-border",
+        success:
+          "border-transparent bg-green-100 text-green-800 border-green-200",
+        warning:
+          "border-transparent bg-yellow-100 text-yellow-800 border-yellow-200",
+        danger:
+          "border-transparent bg-red-100 text-red-800 border-red-200",
+        // Special Pakistani e-commerce badges
+        new: "border-transparent bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md animate-pulse",
+        sale: "border-transparent bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-md font-bold",
+        featured: "border-transparent bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-md",
+        discount: "border-transparent bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md font-bold",
       },
       size: {
+        default: "px-2.5 py-0.5 text-xs",
         sm: "px-2 py-0.5 text-xs",
-        md: "px-2.5 py-0.5 text-sm",
-        lg: "px-3 py-1 text-base"
-      }
+        lg: "px-3 py-1 text-sm",
+        xl: "px-4 py-1.5 text-base",
+      },
     },
     defaultVariants: {
       variant: "default",
-      size: "md"
-    }
+      size: "default",
+    },
   }
 );
 
-interface BadgeProps 
+export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
-  children: React.ReactNode;
-  icon?: React.ReactNode;
+    VariantProps<typeof badgeVariants> {}
+
+function Badge({ className, variant, size, ...props }: BadgeProps) {
+  return (
+    <div className={cn(badgeVariants({ variant, size }), className)} {...props} />
+  );
 }
 
-const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
-  ({ className, variant, size, children, icon, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(badgeVariants({ variant, size }), className)}
-        {...props}
-      >
-        {icon && <span className="mr-1">{icon}</span>}
-        {children}
-      </div>
-    );
-  }
-);
+// Predefined specialized badges for Pakistani e-commerce
+export interface DiscountBadgeProps extends Omit<BadgeProps, "variant"> {
+  percentage?: number;
+}
 
-Badge.displayName = "Badge";
-
-// Specialized badge components for e-commerce
-const DiscountBadge = ({ discount, className, ...props }: { discount: number } & Omit<BadgeProps, 'children' | 'variant'>) => (
-  <Badge variant="discount" className={className} {...props}>
-    {discount}% OFF
+const DiscountBadge = ({ children, className, percentage, ...props }: DiscountBadgeProps) => (
+  <Badge variant="discount" className={cn("text-white font-bold", className)} {...props}>
+    {children || (percentage ? `${percentage}% OFF` : "DISCOUNT")}
   </Badge>
 );
 
-const NewBadge = ({ className, ...props }: Omit<BadgeProps, 'children' | 'variant'>) => (
-  <Badge variant="new" className={className} {...props}>
-    NEW
+const NewBadge = ({ className, ...props }: Omit<BadgeProps, "variant" | "children">) => (
+  <Badge variant="new" className={cn("animate-pulse", className)} {...props}>
+    New
   </Badge>
 );
 
-const SaleBadge = ({ className, ...props }: Omit<BadgeProps, 'children' | 'variant'>) => (
-  <Badge variant="sale" className={className} {...props}>
-    SALE
+const SaleBadge = ({ className, ...props }: Omit<BadgeProps, "variant" | "children">) => (
+  <Badge variant="sale" className={cn("font-bold", className)} {...props}>
+    Sale
   </Badge>
 );
 
-const FeaturedBadge = ({ className, ...props }: Omit<BadgeProps, 'children' | 'variant'>) => (
+const FeaturedBadge = ({ className, ...props }: Omit<BadgeProps, "variant" | "children">) => (
   <Badge variant="featured" className={className} {...props}>
-    FEATURED
+    Featured
   </Badge>
 );
 
 export { Badge, DiscountBadge, NewBadge, SaleBadge, FeaturedBadge, badgeVariants };
-export type { BadgeProps };

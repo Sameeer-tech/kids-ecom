@@ -1,228 +1,261 @@
-import React from 'react';
-import Link from 'next/link';
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
-import { Container } from './Container';
-import { Button } from '../ui/Button';
-import { Input } from '../ui/Input';
+"use client";
 
-const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear();
+import * as React from "react";
+import { useState } from "react";
+import Link from "next/link";
+import { 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Facebook, 
+  Instagram, 
+  MessageCircle,
+  CreditCard,
+  Truck,
+  Shield,
+  Award,
+  Heart
+} from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Badge } from "@/components/ui/Badge";
+import { Container } from "./Container";
+import { cn } from "@/lib/utils";
 
-  const footerLinks = {
-    shop: [
-      { label: 'Boys Clothing', href: '/boys' },
-      { label: 'Girls Clothing', href: '/girls' },
-      { label: 'Newborn & Baby', href: '/newborn' },
-      { label: 'School Uniforms', href: '/uniforms' },
-      { label: 'Party Wear', href: '/party-wear' },
-      { label: 'Sale Items', href: '/sale' }
-    ],
-    customer: [
-      { label: 'Size Guide', href: '/size-guide' },
-      { label: 'Shipping Info', href: '/shipping' },
-      { label: 'Returns & Exchanges', href: '/returns' },
-      { label: 'Track Your Order', href: '/track-order' },
-      { label: 'Customer Reviews', href: '/reviews' },
-      { label: 'Gift Cards', href: '/gift-cards' }
-    ],
-    company: [
-      { label: 'About KidsWear PK', href: '/about' },
-      { label: 'Our Story', href: '/story' },
-      { label: 'Careers', href: '/careers' },
-      { label: 'Press & Media', href: '/press' },
-      { label: 'Wholesale', href: '/wholesale' },
-      { label: 'Contact Us', href: '/contact' }
-    ],
-    legal: [
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Service', href: '/terms' },
-      { label: 'Cookie Policy', href: '/cookies' },
-      { label: 'Refund Policy', href: '/refund-policy' }
-    ]
-  };
+export interface FooterProps extends React.HTMLAttributes<HTMLElement> {}
 
-  const socialLinks = [
-    { icon: Facebook, href: 'https://facebook.com/kidswear.pk', label: 'Facebook' },
-    { icon: Instagram, href: 'https://instagram.com/kidswear.pk', label: 'Instagram' },
-    { icon: Twitter, href: 'https://twitter.com/kidswear_pk', label: 'Twitter' },
-    { icon: Youtube, href: 'https://youtube.com/@kidswear-pk', label: 'YouTube' }
-  ];
+const Footer = React.forwardRef<HTMLElement, FooterProps>(
+  ({ className, ...props }, ref) => {
+    const [email, setEmail] = useState("");
 
-  return (
-    <footer className="bg-gradient-to-b from-gray-50 to-white border-t border-gray-200">
-      {/* Newsletter Section */}
-      <div className="bg-gradient-to-r from-primary-600 to-secondary-500 text-white py-12">
-        <Container>
-          <div className="text-center max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold mb-2">Stay Updated with KidsWear PK!</h3>
-            <p className="text-primary-100 mb-6">
-              Get the latest kids fashion trends, exclusive deals, and parenting tips delivered to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <Input 
-                placeholder="Enter your email"
-                className="flex-1 bg-white border-0"
-                leftIcon={<Mail className="h-4 w-4" />}
-              />
-              <Button variant="secondary" className="shrink-0">
-                Subscribe
-              </Button>
-            </div>
-            <p className="text-xs text-primary-200 mt-3">
-              We respect your privacy. Unsubscribe anytime.
-            </p>
-          </div>
-        </Container>
-      </div>
+    const quickLinks = [
+      { name: "About Us", href: "/about" },
+      { name: "Size Guide", href: "/size-guide" },
+      { name: "Care Instructions", href: "/care" },
+      { name: "Returns & Exchange", href: "/returns" },
+      { name: "Track Your Order", href: "/track" },
+      { name: "Contact Us", href: "/contact" },
+    ];
 
-      {/* Main Footer Content */}
-      <Container>
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Company Info */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-500 flex items-center justify-center">
-                <span className="text-white font-bold text-xl">K</span>
+    const categories = [
+      { name: "Boys Clothing", href: "/boys" },
+      { name: "Girls Clothing", href: "/girls" },
+      { name: "Traditional Wear", href: "/traditional" },
+      { name: "Casual Wear", href: "/casual" },
+      { name: "Accessories", href: "/accessories" },
+      { name: "Sale Items", href: "/sale" },
+    ];
+
+    const policies = [
+      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms of Service", href: "/terms" },
+      { name: "Shipping Policy", href: "/shipping" },
+      { name: "Refund Policy", href: "/refund" },
+    ];
+
+    return (
+      <footer ref={ref} className={cn("bg-gray-900 text-white border-t border-gray-200", className)} {...props}>
+        {/* Features Section */}
+        <div className="bg-gradient-to-r from-green-50 to-white py-12">
+          <Container>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <Truck className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Free Delivery</h3>
+                  <p className="text-sm text-gray-600">Across Pakistan on orders over PKR 2,000</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 bg-clip-text text-transparent">
-                  KidsWear PK
-                </h2>
-                <p className="text-xs text-gray-500">Making Childhood Colorful</p>
+              
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Shield className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Quality Assured</h3>
+                  <p className="text-sm text-gray-600">100% authentic Pakistani craftsmanship</p>
+                </div>
               </div>
-            </div>
-            
-            <p className="text-gray-600 mb-6 max-w-sm">
-              Pakistan's leading kids fashion destination. We offer high-quality, comfortable, 
-              and stylish clothing for children of all ages, from newborns to teenagers.
-            </p>
-
-            {/* Contact Info */}
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-sm text-gray-600">
-                <Phone className="h-4 w-4 text-primary-600" />
-                <span>+92 300 1234567</span>
+              
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <CreditCard className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Secure Payment</h3>
+                  <p className="text-sm text-gray-600">JazzCash, EasyPaisa, Bank Transfer</p>
+                </div>
               </div>
-              <div className="flex items-center space-x-3 text-sm text-gray-600">
-                <Mail className="h-4 w-4 text-primary-600" />
-                <span>hello@kidswear.pk</span>
-              </div>
-              <div className="flex items-center space-x-3 text-sm text-gray-600">
-                <MapPin className="h-4 w-4 text-primary-600" />
-                <span>Lahore, Karachi, Islamabad</span>
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div className="flex space-x-4 mt-6">
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  className="w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center transition-colors"
-                  aria-label={label}
-                >
-                  <Icon className="h-5 w-5 text-primary-600" />
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Shop Links */}
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Shop</h3>
-            <ul className="space-y-3">
-              {footerLinks.shop.map((link) => (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href}
-                    className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Customer Service */}
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Customer Service</h3>
-            <ul className="space-y-3">
-              {footerLinks.customer.map((link) => (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href}
-                    className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company & Legal */}
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Company</h3>
-            <ul className="space-y-3 mb-6">
-              {footerLinks.company.map((link) => (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href}
-                    className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            
-            <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href}
-                    className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Container>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-200 bg-gray-50">
-        <Container>
-          <div className="py-6 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-600">
-              © {currentYear} KidsWear PK. All rights reserved. Made with ❤️ in Pakistan.
-            </p>
-            <div className="flex items-center space-x-6 mt-4 md:mt-0">
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-500">We accept:</span>
-                <div className="flex space-x-2">
-                  <div className="w-8 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">
-                    VISA
-                  </div>
-                  <div className="w-8 h-5 bg-red-600 rounded text-white text-xs flex items-center justify-center font-bold">
-                    MC
-                  </div>
-                  <div className="w-8 h-5 bg-green-600 rounded text-white text-xs flex items-center justify-center font-bold">
-                    COD
-                  </div>
+              
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <Award className="h-6 w-6 text-yellow-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Trusted Brand</h3>
+                  <p className="text-sm text-gray-600">10,000+ happy customers</p>
                 </div>
               </div>
             </div>
-          </div>
-        </Container>
-      </div>
-    </footer>
-  );
-};
+          </Container>
+        </div>
+
+        {/* Main Footer Content */}
+        <div className="bg-white py-12">
+          <Container>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Company Info */}
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center space-x-2 mb-4">
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-600 to-green-700 rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold">KW</span>
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-green-800">KidsWear Pakistan</h2>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    Premium Pakistani traditional and modern clothing for children. 
+                    Made with love and care for your little ones.
+                  </p>
+                </div>
+
+                {/* Contact Info */}
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <MapPin className="h-4 w-4 text-green-600 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">
+                      Main Bazaar, Liberty Market, Lahore, Pakistan
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Phone className="h-4 w-4 text-green-600 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">+92-300-1234567</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Mail className="h-4 w-4 text-green-600 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">info@kidswearpk.com</span>
+                  </div>
+                </div>
+
+                {/* Social Media */}
+                <div className="flex space-x-3">
+                  <Button variant="outline" size="icon" className="h-8 w-8">
+                    <Facebook className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" className="h-8 w-8">
+                    <Instagram className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" className="h-8 w-8">
+                    <MessageCircle className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Quick Links */}
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-4">Quick Links</h3>
+                <ul className="space-y-2">
+                  {quickLinks.map((link) => (
+                    <li key={link.name}>
+                      <Link 
+                        href={link.href}
+                        className="text-sm text-gray-600 hover:text-green-600 transition-colors"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Categories */}
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-4">Shop by Category</h3>
+                <ul className="space-y-2">
+                  {categories.map((category) => (
+                    <li key={category.name}>
+                      <Link 
+                        href={category.href}
+                        className="text-sm text-gray-600 hover:text-green-600 transition-colors flex items-center justify-between"
+                      >
+                        <span>{category.name}</span>
+                        {category.name === "Sale Items" && (
+                          <Badge variant="danger" size="sm">
+                            Hot
+                          </Badge>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Newsletter */}
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-4">Stay Updated</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Get the latest updates on new arrivals and exclusive offers.
+                </p>
+                <div className="space-y-3">
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    variant="pakistan"
+                  />
+                  <Button variant="pakistan" className="w-full">
+                    Subscribe
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  We respect your privacy. Unsubscribe at any time.
+                </p>
+              </div>
+            </div>
+          </Container>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="bg-gray-100 py-6">
+          <Container>
+            <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+              <div className="text-sm text-gray-600">
+                © 2024 KidsWear Pakistan. All rights reserved.
+              </div>
+              
+              <div className="flex items-center space-x-4">
+                {policies.map((policy, index) => (
+                  <React.Fragment key={policy.name}>
+                    <Link 
+                      href={policy.href}
+                      className="text-xs text-gray-600 hover:text-green-600 transition-colors"
+                    >
+                      {policy.name}
+                    </Link>
+                    {index < policies.length - 1 && (
+                      <span className="text-gray-400">|</span>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+              
+              <div className="flex items-center space-x-1 text-sm text-gray-600">
+                <span>Made with</span>
+                <Heart className="h-4 w-4 text-red-500 fill-current" />
+                <span>in Pakistan</span>
+              </div>
+            </div>
+          </Container>
+        </div>
+      </footer>
+    );
+  }
+);
+Footer.displayName = "Footer";
 
 export { Footer };
